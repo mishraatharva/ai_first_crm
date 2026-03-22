@@ -16,13 +16,14 @@ def intent_node(state: InteractionState, config):
     
 
     """
-    This prompt will classify the user input into one of 3 categories:[log, edit_interaction, query]
+    This prompt will classify the user input into one of 4 categories:[log, edit_interaction, query, delete]
     """
     prompt = f"""
     Classify user intent into one of:
     - log # only in case of total new data
     - edit_interaction # incase to update any field of last saved data
     - query # for querying existing data
+    - delete # for deleting existing data
     
     Input: {state["input"]}
     """

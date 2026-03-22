@@ -5,6 +5,7 @@ from src.nodes.log_node import log_node
 from src.nodes.query_sentiment_node import query_node
 from src.nodes.followup_node import followup_node
 from src.nodes.intention_node import intent_node
+from src.nodes.delete_data import delete_data_node
 
 
 def route(state: InteractionState):
@@ -16,8 +17,12 @@ def route(state: InteractionState):
         return "edit_interaction"
     elif intent == "query":
         return "query"
+    elif intent == "delete":
+        return "delete"
     
+
 from langgraph.graph import END
+
 
 def route_after_log(state: InteractionState):
     if state.get("status") == "complete":
@@ -25,7 +30,7 @@ def route_after_log(state: InteractionState):
     else:
         return "end"
 
-    
+
 def build_graph():
     builder = StateGraph(InteractionState)
     
@@ -34,6 +39,7 @@ def build_graph():
     builder.add_node("edit_interaction", edit_interaction)
     builder.add_node("query", query_node)
     builder.add_node("followup", followup_node)
+    builder.add_node("delete", delete_data_node)
     
     builder.set_entry_point("intent")
     
@@ -44,6 +50,7 @@ def build_graph():
                 "log": "log",
                 "edit_interaction": "edit_interaction",
                 "query": "query",
+                "delete": "delete",
             }
         )
     
@@ -59,5 +66,6 @@ def build_graph():
     builder.add_edge("edit_interaction", END)
     builder.add_edge("query", END)
     builder.add_edge("followup", END)
+    builder.add_edge("delete", END)
     
     return builder.compile()

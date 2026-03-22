@@ -60,4 +60,3 @@ class QueryExtraction(BaseModel):
     sentiment: Optional[str]
     interaction_type: Optional[str]
     materials: Optional[str]
-    materials: Optional[str]

@@ -17,23 +17,23 @@ def query_node(state: InteractionState, config):
     prompt = f"""
     Extract query filters from user input.
 
-    Available fields:
-    hcp_name, date, sentiment, interaction_type, materials
+    Available fields: hcp_name, date, sentiment, interaction_type, materials
 
     Rules:
-    - Only extract explicitly mentioned filters
+    - Only set fields that are explicitly mentioned
+    - Set other fields to null
     - Do NOT guess
     - Convert natural language:
         "today" → actual date
         "yesterday" → actual date
-    - Return valid JSON
+    - Return JSON with all fields, null for unspecified
 
     Examples:
     Input: show all negative sentiment doctors
-    Output: {{ "sentiment": "negative" }}
+    Output: {{"hcp_name": null, "date": null, "sentiment": "negative", "interaction_type": null, "materials": null}}
 
     Input: show meetings with Dr Sharma
-    Output: {{ "hcp_name": "Dr Sharma", "interaction_type": "Meeting" }}
+    Output: {{"hcp_name": "Dr Sharma", "date": null, "sentiment": null, "interaction_type": "Meeting", "materials": null}}
 
     User input:
     {state["input"]}
